@@ -2817,7 +2817,7 @@ Discarded input sections
  .data          0x0000000000000000        0x0 Output/Release/Obj/saadc_pca10100/main.o
  .bss           0x0000000000000000        0x0 Output/Release/Obj/saadc_pca10100/main.o
  .text.GetTempeFromADC
-                0x0000000000000000       0xd8 Output/Release/Obj/saadc_pca10100/main.o
+                0x0000000000000000       0xd0 Output/Release/Obj/saadc_pca10100/main.o
  .data.M_ADV_TEMPE_TABLE
                 0x0000000000000000       0x1e Output/Release/Obj/saadc_pca10100/main.o
  .data.P_ADV_TEMPE_TABLE
@@ -6458,7 +6458,7 @@ LOAD linker stubs
  .comment       0x0000000000000025       0x26 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
  .comment       0x0000000000000025       0x26 C:/Program Files/SEGGER/SEGGER Embedded Studio for ARM 5.50d/lib/libc_v7em_fpv4_sp_d16_hard_t_le_eabi.a(libc2.o)
 
-.debug_line     0x0000000000000000     0xf7c8
+.debug_line     0x0000000000000000     0xf7cb
  .debug_line    0x0000000000000000      0x21f Output/Release/Obj/saadc_pca10100/thumb_crt0.o
  .debug_line    0x000000000000021f      0x6df Output/Release/Obj/saadc_pca10100/nrf_log_backend_serial.o
  .debug_line    0x00000000000008fe      0x98c Output/Release/Obj/saadc_pca10100/nrf_log_backend_uart.o
@@ -6481,12 +6481,12 @@ LOAD linker stubs
  .debug_line    0x000000000000a517      0xfa3 Output/Release/Obj/saadc_pca10100/nrfx_timer.o
  .debug_line    0x000000000000b4ba     0x180e Output/Release/Obj/saadc_pca10100/nrfx_uart.o
  .debug_line    0x000000000000ccc8     0x179c Output/Release/Obj/saadc_pca10100/nrfx_uarte.o
- .debug_line    0x000000000000e464      0xbfd Output/Release/Obj/saadc_pca10100/main.o
- .debug_line    0x000000000000f061       0xaa Output/Release/Obj/saadc_pca10100/ses_startup_nrf52833.o
- .debug_line    0x000000000000f10b       0xc9 Output/Release/Obj/saadc_pca10100/ses_startup_nrf_common.o
- .debug_line    0x000000000000f1d4      0x5f4 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
+ .debug_line    0x000000000000e464      0xc00 Output/Release/Obj/saadc_pca10100/main.o
+ .debug_line    0x000000000000f064       0xaa Output/Release/Obj/saadc_pca10100/ses_startup_nrf52833.o
+ .debug_line    0x000000000000f10e       0xc9 Output/Release/Obj/saadc_pca10100/ses_startup_nrf_common.o
+ .debug_line    0x000000000000f1d7      0x5f4 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
 
-.debug_info     0x0000000000000000    0x1760f
+.debug_info     0x0000000000000000    0x17613
  .debug_info    0x0000000000000000       0x22 Output/Release/Obj/saadc_pca10100/thumb_crt0.o
  .debug_info    0x0000000000000022      0x77b Output/Release/Obj/saadc_pca10100/nrf_log_backend_serial.o
  .debug_info    0x000000000000079d     0x1161 Output/Release/Obj/saadc_pca10100/nrf_log_backend_uart.o
@@ -6509,12 +6509,12 @@ LOAD linker stubs
  .debug_info    0x000000000000d8b0     0x1b57 Output/Release/Obj/saadc_pca10100/nrfx_timer.o
  .debug_info    0x000000000000f407     0x315d Output/Release/Obj/saadc_pca10100/nrfx_uart.o
  .debug_info    0x0000000000012564     0x3324 Output/Release/Obj/saadc_pca10100/nrfx_uarte.o
- .debug_info    0x0000000000015888      0x97e Output/Release/Obj/saadc_pca10100/main.o
- .debug_info    0x0000000000016206       0x23 Output/Release/Obj/saadc_pca10100/ses_startup_nrf52833.o
- .debug_info    0x0000000000016229       0x23 Output/Release/Obj/saadc_pca10100/ses_startup_nrf_common.o
- .debug_info    0x000000000001624c     0x13c3 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
+ .debug_info    0x0000000000015888      0x982 Output/Release/Obj/saadc_pca10100/main.o
+ .debug_info    0x000000000001620a       0x23 Output/Release/Obj/saadc_pca10100/ses_startup_nrf52833.o
+ .debug_info    0x000000000001622d       0x23 Output/Release/Obj/saadc_pca10100/ses_startup_nrf_common.o
+ .debug_info    0x0000000000016250     0x13c3 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
 
-.debug_abbrev   0x0000000000000000     0x43d3
+.debug_abbrev   0x0000000000000000     0x43cc
  .debug_abbrev  0x0000000000000000       0x12 Output/Release/Obj/saadc_pca10100/thumb_crt0.o
  .debug_abbrev  0x0000000000000012      0x214 Output/Release/Obj/saadc_pca10100/nrf_log_backend_serial.o
  .debug_abbrev  0x0000000000000226      0x356 Output/Release/Obj/saadc_pca10100/nrf_log_backend_uart.o
@@ -6537,10 +6537,10 @@ LOAD linker stubs
  .debug_abbrev  0x0000000000002fae      0x42f Output/Release/Obj/saadc_pca10100/nrfx_timer.o
  .debug_abbrev  0x00000000000033dd      0x57a Output/Release/Obj/saadc_pca10100/nrfx_uart.o
  .debug_abbrev  0x0000000000003957      0x4e7 Output/Release/Obj/saadc_pca10100/nrfx_uarte.o
- .debug_abbrev  0x0000000000003e3e      0x25a Output/Release/Obj/saadc_pca10100/main.o
- .debug_abbrev  0x0000000000004098       0x14 Output/Release/Obj/saadc_pca10100/ses_startup_nrf52833.o
- .debug_abbrev  0x00000000000040ac       0x14 Output/Release/Obj/saadc_pca10100/ses_startup_nrf_common.o
- .debug_abbrev  0x00000000000040c0      0x313 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
+ .debug_abbrev  0x0000000000003e3e      0x253 Output/Release/Obj/saadc_pca10100/main.o
+ .debug_abbrev  0x0000000000004091       0x14 Output/Release/Obj/saadc_pca10100/ses_startup_nrf52833.o
+ .debug_abbrev  0x00000000000040a5       0x14 Output/Release/Obj/saadc_pca10100/ses_startup_nrf_common.o
+ .debug_abbrev  0x00000000000040b9      0x313 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
 
 .debug_aranges  0x0000000000000000      0x870
  .debug_aranges
@@ -6649,7 +6649,7 @@ LOAD linker stubs
  .debug_str     0x0000000000096626     0x82a9 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
                                       0x81550 (size before relaxing)
 
-.debug_ranges   0x0000000000000000     0x1c78
+.debug_ranges   0x0000000000000000     0x1c60
  .debug_ranges  0x0000000000000000       0x90 Output/Release/Obj/saadc_pca10100/thumb_crt0.o
  .debug_ranges  0x0000000000000090       0x28 Output/Release/Obj/saadc_pca10100/nrf_log_backend_serial.o
  .debug_ranges  0x00000000000000b8       0x88 Output/Release/Obj/saadc_pca10100/nrf_log_backend_uart.o
@@ -6672,8 +6672,8 @@ LOAD linker stubs
  .debug_ranges  0x0000000000001080      0x2e0 Output/Release/Obj/saadc_pca10100/nrfx_timer.o
  .debug_ranges  0x0000000000001360      0x460 Output/Release/Obj/saadc_pca10100/nrfx_uart.o
  .debug_ranges  0x00000000000017c0      0x3f0 Output/Release/Obj/saadc_pca10100/nrfx_uarte.o
- .debug_ranges  0x0000000000001bb0       0x78 Output/Release/Obj/saadc_pca10100/main.o
- .debug_ranges  0x0000000000001c28       0x50 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
+ .debug_ranges  0x0000000000001bb0       0x60 Output/Release/Obj/saadc_pca10100/main.o
+ .debug_ranges  0x0000000000001c10       0x50 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
 
 .debug_frame    0x0000000000000000     0x15d4
  .debug_frame   0x0000000000000000       0x48 Output/Release/Obj/saadc_pca10100/nrf_log_backend_serial.o
@@ -6700,7 +6700,7 @@ LOAD linker stubs
  .debug_frame   0x00000000000014e0       0x88 Output/Release/Obj/saadc_pca10100/main.o
  .debug_frame   0x0000000000001568       0x6c Output/Release/Obj/saadc_pca10100/system_nrf52833.o
 
-.debug_loc      0x0000000000000000     0x930d
+.debug_loc      0x0000000000000000     0x930e
  .debug_loc     0x0000000000000000      0x186 Output/Release/Obj/saadc_pca10100/nrf_log_backend_serial.o
  .debug_loc     0x0000000000000186      0x2a6 Output/Release/Obj/saadc_pca10100/nrf_log_backend_uart.o
  .debug_loc     0x000000000000042c       0x31 Output/Release/Obj/saadc_pca10100/nrf_log_default_backends.o
@@ -6722,8 +6722,8 @@ LOAD linker stubs
  .debug_loc     0x0000000000005729      0xb47 Output/Release/Obj/saadc_pca10100/nrfx_timer.o
  .debug_loc     0x0000000000006270     0x161c Output/Release/Obj/saadc_pca10100/nrfx_uart.o
  .debug_loc     0x000000000000788c     0x177d Output/Release/Obj/saadc_pca10100/nrfx_uarte.o
- .debug_loc     0x0000000000009009      0x274 Output/Release/Obj/saadc_pca10100/main.o
- .debug_loc     0x000000000000927d       0x90 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
+ .debug_loc     0x0000000000009009      0x275 Output/Release/Obj/saadc_pca10100/main.o
+ .debug_loc     0x000000000000927e       0x90 Output/Release/Obj/saadc_pca10100/system_nrf52833.o
 
 .debug_pubnames
                 0x0000000000000000     0x6180

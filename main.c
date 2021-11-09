@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 //   Date      | Author | Version |  Modification 
 //-------------+--------+---------+------------------------------------------
-// 9 Nov 2021 |  WHI   |   1.0a   |  Creation
+// 9 Nov 2021 |  WHI   |   1.1   |  Creation
 /****************************************************************************/
 
 #include <stdbool.h>
@@ -54,22 +54,22 @@ float GetTempeFromADC(int nADC)
 	
 	else if (nADC <= M_ADV_TEMPE_TABLE[0])
 	{
-		for(int i = 0; i < sizeof(M_ADV_TEMPE_TABLE); i++)
+		for(int i = 0; i < nToI; i++)
 		{
 			if(nADC == M_ADV_TEMPE_TABLE[i])
-				return (float) 0 - i;
+				return (float) - i;
 			else if(nADC > M_ADV_TEMPE_TABLE[i])
 			{
 				float mTemp = (float)i - 1;	
 				mTemp += (float)(nADC - M_ADV_TEMPE_TABLE[i - 1]) / (float)(M_ADV_TEMPE_TABLE[i] - M_ADV_TEMPE_TABLE[i - 1]);
-				return (float) 0 - mTemp;
+				return (float) - mTemp;
 			}
 		}	
 	}
 	
 	else
 	{
-		for(int i = 1; i < sizeof(P_ADV_TEMPE_TABLE); i++)
+		for(int i = 1; i < nToI; i++)
 		{
 			if(nADC == P_ADV_TEMPE_TABLE[i])
 				return i;
@@ -97,7 +97,8 @@ void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
 		APP_ERROR_CHECK(err_code);
 
 		int sum = 0;
-		int max, min = p_event->data.done.p_buffer[0];
+		int max = p_event->data.done.p_buffer[0];
+		int	min = p_event->data.done.p_buffer[0];
 
 		for(int i = 0; i < SAMPLES_IN_BUFFER; i++)
 		{
@@ -123,7 +124,6 @@ void saadc_init(void)
 	ret_code_t err_code;
 	nrf_saadc_channel_config_t channel_config =
 	NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN5);
-
 	
 	channel_config.reference = NRF_SAADC_REFERENCE_VDD4; // VDD/4
 	channel_config.gain = NRF_SAADC_GAIN1_4; // Gaub factor 1/4
