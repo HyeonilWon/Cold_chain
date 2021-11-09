@@ -1,52 +1,10 @@
-/**
- * Copyright (c) 2014 - 2020, Nordic Semiconductor ASA
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form, except as embedded into a Nordic
- *    Semiconductor ASA integrated circuit in a product or a software update for
- *    such product, must reproduce the above copyright notice, this list of
- *    conditions and the following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. Neither the name of Nordic Semiconductor ASA nor the names of its
- *    contributors may be used to endorse or promote products derived from this
- *    software without specific prior written permission.
- *
- * 4. This software, with or without modification, must only be used with a
- *    Nordic Semiconductor ASA integrated circuit.
- *
- * 5. Any software provided in binary form under this license must not be reverse
- *    engineered, decompiled, modified and/or disassembled.
- *
- * THIS SOFTWARE IS PROVIDED BY NORDIC SEMICONDUCTOR ASA "AS IS" AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY, NONINFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL NORDIC SEMICONDUCTOR ASA OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */
-/** @file
- * @defgroup nrf_adc_example main.c
- * @{
- * @ingroup nrf_adc_example
- * @brief ADC Example Application main file.
- *
- * This file contains the source code for a sample application using ADC.
- *
- * @image html example_board_setup_a.jpg "Use board setup A for this example."
- */
+/****************************************************************************/
+//  File    : main.c
+//---------------------------------------------------------------------------
+//   Date      | Author | Version |  Modification 
+//-------------+--------+---------+------------------------------------------
+// 5 Nov 2021 |  WHI   |   1.0   |  Creation
+/****************************************************************************/
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -67,8 +25,96 @@
 #include "nrf_log_default_backends.h"
 #include "nrf_delay.h"
 
+#define SAMPLES_IN_BUFFER 6
+
+int Avg_ADC;
+
+uint16_t P_ADV_TEMPE_TABLE[] = {
+	963,  1001, 1040, 1079, 1120,
+	1161, 1202, 1244, 1287, 1330,
+	1374, 1418, 1462, 1507, 1552
+};
+
+uint16_t M_ADV_TEMPE_TABLE[] = {
+	963, 926, 889, 854, 819,
+	785, 752, 720, 688, 658,
+	629, 600, 572, 546, 520
+};
+
+
+float GetTempeFromADC(int nADC)
+{	
+	int nToI = sizeof(P_ADV_TEMPE_TABLE) / sizeof(P_ADV_TEMPE_TABLE[0]);
+	
+	if (nADC > P_ADV_TEMPE_TABLE[nToI - 1])
+		return (float)(nToI - 1);
+	
+	else if (nADC < M_ADV_TEMPE_TABLE[nToI - 1])
+		return (float) -(nToI - 1);
+	
+	else if (nADC <= M_ADV_TEMPE_TABLE[0])
+	{
+		for(int i = 0; i < sizeof(M_ADV_TEMPE_TABLE); i++)
+		{
+			if(nADC == M_ADV_TEMPE_TABLE[i])
+				return (float) 0 - i;
+			else if(nADC > M_ADV_TEMPE_TABLE[i])
+			{
+				float mTemp = (float)i - 1;	
+				mTemp += (float)(nADC - M_ADV_TEMPE_TABLE[i - 1]) / (float)(M_ADV_TEMPE_TABLE[i] - M_ADV_TEMPE_TABLE[i - 1]);
+				return (float) 0 - mTemp;
+			}
+		}	
+	}
+	
+	else
+	{
+		for(int i = 1; i < sizeof(P_ADV_TEMPE_TABLE); i++)
+		{
+			if(nADC == P_ADV_TEMPE_TABLE[i])
+				return i;
+			else if(nADC < P_ADV_TEMPE_TABLE[i])
+			{
+				float pTemp = (float)i - 1;	
+				pTemp += (float)(nADC - P_ADV_TEMPE_TABLE[i - 1]) / (float)(P_ADV_TEMPE_TABLE[i] - P_ADV_TEMPE_TABLE[i - 1]);
+				return pTemp;
+			}			
+		}
+	}
+	
+	return 0.0F;
+	
+}
+	
+
 void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
 {
+	if(p_event->type == NRF_DRV_SAADC_EVT_DONE)
+	{
+		ret_code_t err_code;
+	
+		err_code = nrf_drv_saadc_buffer_convert(p_event->data.done.p_buffer, SAMPLES_IN_BUFFER);
+		APP_ERROR_CHECK(err_code);
+
+		int sum = 0;
+		int max, min = p_event->data.done.p_buffer[0];
+
+		for(int i = 0; i < SAMPLES_IN_BUFFER; i++)
+		{
+			if (p_event->data.done.p_buffer[i] > max)
+				max = p_event->data.done.p_buffer[i];
+			
+			if (p_event->data.done.p_buffer[i] < min)
+				min = p_event->data.done.p_buffer[i];
+			
+			sum += p_event->data.done.p_buffer[i];
+		}
+
+		sum -= max;
+		sum -= min;
+
+		Avg_ADC = sum / (SAMPLES_IN_BUFFER-2);
+	}
 
 }
 
@@ -76,7 +122,12 @@ void saadc_init(void)
 {
     ret_code_t err_code;
     nrf_saadc_channel_config_t channel_config =
-    NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN2);
+    NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN5);
+
+	
+	channel_config.reference = NRF_SAADC_REFERENCE_VDD4; // VDD/4
+	channel_config.gain = NRF_SAADC_GAIN1_4; // Gaub factor 1/4
+	channel_config.acq_time = NRF_SAADC_ACQTIME_20US; // ADC Sampling time
 
     err_code = nrf_drv_saadc_init(NULL, saadc_callback);
     APP_ERROR_CHECK(err_code);
@@ -91,23 +142,12 @@ void saadc_init(void)
  */
 int main(void)
 {
-    uint32_t err_code = NRF_LOG_INIT(NULL);
-    APP_ERROR_CHECK(err_code);
-
     NRF_LOG_DEFAULT_BACKENDS_INIT();
-
     saadc_init();
-    
-    nrf_saadc_value_t adc_val;
-
     NRF_LOG_INFO("Application started.");
 
     while (1)
     {
-      nrfx_saadc_sample_convert(0, &adc_val);
-      NRF_LOG_INFO("Sample value Read: %d", adc_val);
-      
-      nrf_delay_ms(1000);
       
     }
 }
