@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 //   Date      | Author | Version |  Modification 
 //-------------+--------+---------+------------------------------------------
-// 5 Nov 2021 |  WHI   |   1.0   |  Creation
+// 9 Nov 2021 |  WHI   |   1.0a   |  Creation
 /****************************************************************************/
 
 #include <stdbool.h>
@@ -120,20 +120,20 @@ void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
 
 void saadc_init(void)
 {
-    ret_code_t err_code;
-    nrf_saadc_channel_config_t channel_config =
-    NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN5);
+	ret_code_t err_code;
+	nrf_saadc_channel_config_t channel_config =
+	NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_AIN5);
 
 	
 	channel_config.reference = NRF_SAADC_REFERENCE_VDD4; // VDD/4
 	channel_config.gain = NRF_SAADC_GAIN1_4; // Gaub factor 1/4
 	channel_config.acq_time = NRF_SAADC_ACQTIME_20US; // ADC Sampling time
 
-    err_code = nrf_drv_saadc_init(NULL, saadc_callback);
-    APP_ERROR_CHECK(err_code);
+	err_code = nrf_drv_saadc_init(NULL, saadc_callback);
+	APP_ERROR_CHECK(err_code);
 
-    err_code = nrf_drv_saadc_channel_init(0, &channel_config);
-    APP_ERROR_CHECK(err_code);
+	err_code = nrf_drv_saadc_channel_init(0, &channel_config);
+	APP_ERROR_CHECK(err_code);
 
 }
 
@@ -142,14 +142,14 @@ void saadc_init(void)
  */
 int main(void)
 {
-    NRF_LOG_DEFAULT_BACKENDS_INIT();
-    saadc_init();
-    NRF_LOG_INFO("Application started.");
+	NRF_LOG_DEFAULT_BACKENDS_INIT();
+	saadc_init();
+	NRF_LOG_INFO("Application started.");
 
-    while (1)
-    {
-      
-    }
+	while (1)
+	{
+	
+	}
 }
 
 
