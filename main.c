@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 //   Date      | Author | Version |  Modification 
 //-------------+--------+---------+------------------------------------------
-// 9 Nov 2021 |  WHI   |   1.1   |  Creation
+// 12 Nov 2021 |  WHI   |   1.1   |  Creation
 /****************************************************************************/
 
 #include <stdbool.h>
@@ -23,7 +23,6 @@
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
-#include "nrf_delay.h"
 
 #define SAMPLES_IN_BUFFER 6
 
@@ -32,29 +31,40 @@ int Avg_ADC;
 uint16_t P_ADV_TEMPE_TABLE[] = {
 	963,  1001, 1040, 1079, 1120,
 	1161, 1202, 1244, 1287, 1330,
-	1374, 1418, 1462, 1507, 1552
-};
+	1374, 1418, 1462, 1507, 1552,
+	1598, 1643, 1689, 1734, 1780,
+    1826, 1872, 1917, 1963, 2008,
+    2053, 2098, 2143, 2187, 2230,
+    2274, 2317, 2359, 2401, 2442,
+    2483, 2523, 2563, 2602, 2640,
+    2678, 2715, 2751, 2787, 2821,
+    2856, 2889, 2922, 2954, 2985,
+    3016
+}; // 0 ~ 50
 
 uint16_t M_ADV_TEMPE_TABLE[] = {
 	963, 926, 889, 854, 819,
 	785, 752, 720, 688, 658,
-	629, 600, 572, 546, 520
-};
+	629, 600, 572, 546, 520,
+	495, 471, 448, 425, 404,
+	383
 
+}; // -20 ~ 0
 
 float GetTempeFromADC(int nADC)
 {	
-	int nToI = sizeof(P_ADV_TEMPE_TABLE) / sizeof(P_ADV_TEMPE_TABLE[0]);
+	int PTT = sizeof(P_ADV_TEMPE_TABLE) / sizeof(P_ADV_TEMPE_TABLE[0]);
+	int MTT = sizeof(M_ADV_TEMPE_TABLE) / sizeof(M_ADV_TEMPE_TABLE[0]);
 	
-	if (nADC > P_ADV_TEMPE_TABLE[nToI - 1])
-		return (float)(nToI - 1);
+	if (nADC > P_ADV_TEMPE_TABLE[PTT - 1])
+		return (float)(PTT - 1);
 	
-	else if (nADC < M_ADV_TEMPE_TABLE[nToI - 1])
-		return (float) -(nToI - 1);
+	else if (nADC < M_ADV_TEMPE_TABLE[MTT - 1])
+		return (float) -(MTT - 1);
 	
 	else if (nADC <= M_ADV_TEMPE_TABLE[0])
 	{
-		for(int i = 0; i < nToI; i++)
+		for(int i = 0; i < MTT; i++)
 		{
 			if(nADC == M_ADV_TEMPE_TABLE[i])
 				return (float) - i;
@@ -69,7 +79,7 @@ float GetTempeFromADC(int nADC)
 	
 	else
 	{
-		for(int i = 1; i < nToI; i++)
+		for(int i = 1; i < PTT; i++)
 		{
 			if(nADC == P_ADV_TEMPE_TABLE[i])
 				return i;
@@ -98,7 +108,7 @@ void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
 
 		int sum = 0;
 		int max = p_event->data.done.p_buffer[0];
-		int	min = p_event->data.done.p_buffer[0];
+		int min = p_event->data.done.p_buffer[0];
 
 		for(int i = 0; i < SAMPLES_IN_BUFFER; i++)
 		{
@@ -137,18 +147,28 @@ void saadc_init(void)
 
 }
 
+/**@brief Function for initializing the nrf log module.
+ */
+static void log_init(void)
+{
+    ret_code_t err_code = NRF_LOG_INIT(NULL);
+    APP_ERROR_CHECK(err_code);
+
+    NRF_LOG_DEFAULT_BACKENDS_INIT();
+}
+
+
 /**
  * @brief Function for main application entry.
  */
 int main(void)
 {
-	NRF_LOG_DEFAULT_BACKENDS_INIT();
+	log_init();
 	saadc_init();
 	NRF_LOG_INFO("Application started.");
 
 	while (1)
 	{
-	
 	}
 }
 
